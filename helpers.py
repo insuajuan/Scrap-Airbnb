@@ -3,7 +3,9 @@ import time
 from bs4 import BeautifulSoup
 import requests
 from selenium import webdriver
-from selenium.webdriver.safari.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 import openpyxl
 
@@ -65,14 +67,17 @@ def get_property_info(url):
     html = driver.page_source
     soup = BeautifulSoup(html, 'html.parser')
 
-    price_elem = soup.find(class_="_1k4xcdh")
-    # response: $83.720 ARS
-    price = price_elem.get_text()
+    try:
+        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "_1k4xcdh")))
+    finally:
+        price_elem = soup.find(class_="_1k4xcdh")
+        # response: $83.720 ARS
+        price = price_elem.get_text()
 
-    property_name_elem = soup.find('h1')
-    property_name = property_name_elem.get_text()
+        property_name_elem = soup.find('h1')
+        property_name = property_name_elem.get_text()
 
-    driver.close()
+        driver.close()
 
     return property_name, price
 
