@@ -1,9 +1,8 @@
 import concurrent.futures
 import time
+from datetime import datetime, timedelta
 
 from helpers import create_excel, get_all_rooms_url, get_property_info, store_to_excel
-from tqdm import tqdm
-from multiprocessing import Pool
 
 # prompt user for city, country, people, check-in, check-out
 # TO-DO: wrap around try except block. Validate user input
@@ -20,10 +19,22 @@ else:
     city.replace(" ", "-")
     country = input('Please provide country name. i.e: Argentina\n')
     country.replace(" ", "-")
-    adults = input('adults:\n') # min 1 max 16
-    children = input('children:\n') # min 0 max 6
-    checkin = input('checkin? YYYY-MM-DD\n')
-    checkout = input('checkout? YYYY-MM-DD\n') # validate that is > checkin
+    adults = input('No. of adults:\n')
+    while int(adults) < 0 or int(adults) > 16:
+        adults = input('Invalid option. Please provide a number between 1 and 16')
+    children = input('No. of children:\n')
+    while int(children) < 0 or int(children) > 16:
+        children = input('Invalid option. Please provide a number between 1 and 6')
+    checkin = input('Checkin date: YYYY/MM/DD\n')
+    checkout = input('Checkout date: YYYY/MM/DD\n')
+
+    start_timestamp = datetime.strptime(checkin, '%Y/%m/%d')
+    end_timestamp = datetime.strptime(checkout, '%Y/%m/%d')
+
+    while end_timestamp - start_timestamp < timedelta(days=0):
+        print("Invalid dates. Checkout date must be greater than Checkin date")
+        checkin = input('Checkin date: YYYY/MM/DD\n')
+        checkout = input('Checkout date: YYYY/MM/DD\n')
 
 print('**********************************')
 print("Getting all urls to search for final prices")
