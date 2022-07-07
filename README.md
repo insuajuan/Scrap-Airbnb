@@ -19,10 +19,12 @@ After some time, an `xlsx` file will be saved with the results.
 
 ### To-Do:
 The main functionallity has been solved but there is still room to improve:
-- multithread to shorten time
+- ~~multithread to shorten time~~
 - make sure to include exceptions
 - validate user inputs
-- add Firefox and Safari functionallity (not sure if Safari allows headless state)
+- improve cell format in excel
+- add Firefox and Safari functionality (not sure if Safari allows headless state)
+- GUI ?
 
 ### Credits
 https://smithio.medium.com/scraping-airbnb-website-with-python-beautiful-soup-and-selenium-8ec86e327b6c

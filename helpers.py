@@ -49,7 +49,7 @@ def get_all_rooms_url(page_url):
         href_list = get_all_href(page)
         for i in range(len(href_list) - 1):
             if '/rooms' in href_list[i] and href_list[i - 1] != href_list[i]:
-                rooms_list.append(href_list[i])
+                rooms_list.append("https://www.airbnb.com"+href_list[i])
 
     return rooms_list
 
@@ -61,25 +61,21 @@ def get_property_info(url):
     options.add_argument('--no-sandbox')
 
     driver = webdriver.Chrome(options=options)
+
     # get price (need to use Selenium as there is JS that takes a second to load)
     driver.get(url)
-    time.sleep(3)
-    html = driver.page_source
-    soup = BeautifulSoup(html, 'html.parser')
+    wait = WebDriverWait(driver, 10)
+    wait.until(EC.presence_of_element_located((By.CLASS_NAME, "_1k4xcdh")))
 
-    try:
-        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "_1k4xcdh")))
-    finally:
-        price_elem = soup.find(class_="_1k4xcdh")
-        # response: $83.720 ARS
-        price = price_elem.get_text()
+    # after waiting, get price and property name
+    price = driver.find_element(By.CLASS_NAME, "_1k4xcdh").text
+    property_name = driver.find_element(By.TAG_NAME, "h1").text
 
-        property_name_elem = soup.find('h1')
-        property_name = property_name_elem.get_text()
+    print(f"Got info for property {property_name}")
 
-        driver.close()
+    driver.close()
 
-    return property_name, price
+    return property_name, price, url
 
 
 def create_excel(city, country, checkin, checkout, adults, children):
