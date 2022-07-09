@@ -18,10 +18,10 @@ In the terminal run `main.py` to get prompted for searching parameters.
 After some time, an `xlsx` file will be saved with the results.
 
 ### To-Do:
-The main functionallity has been solved but there is still room to improve:
+The main functionality has been solved but there is still room to improve:
 - ~~multithread to shorten time~~
-- make sure to include exceptions
-- validate user inputs
+- ~~make sure to include exceptions~~
+- ~~validate user inputs~~
 - improve cell format in excel
 - add Firefox and Safari functionality (not sure if Safari allows headless state)
 - GUI ?
